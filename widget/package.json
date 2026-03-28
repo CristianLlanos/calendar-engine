@@ -1,0 +1,42 @@
+{
+  "name": "@calendarengine/widget",
+  "version": "0.1.0",
+  "description": "React widget for Calendar Engine",
+  "type": "module",
+  "main": "dist/calendar-engine-widget.umd.cjs",
+  "module": "dist/calendar-engine-widget.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/calendar-engine-widget.js",
+      "require": "./dist/calendar-engine-widget.umd.cjs"
+    },
+    "./styles.css": "./dist/style.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "tsc --noEmit && vite build",
+    "clean": "rm -rf dist"
+  },
+  "peerDependencies": {
+    "react": "^18 || ^19",
+    "react-dom": "^18 || ^19"
+  },
+  "dependencies": {
+    "@calendarengine/sdk": "file:../sdk"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.3.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "typescript": "^5.7.0",
+    "vite": "^6.0.0",
+    "vite-plugin-dts": "^4.3.0"
+  }
+}

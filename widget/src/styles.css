@@ -1,0 +1,30 @@
+.ce-root {
+  font-family: var(--ce-font-family);
+  font-size: var(--ce-font-size);
+  color: var(--ce-text);
+  line-height: 1.5;
+  box-sizing: border-box;
+}
+
+.ce-root *,
+.ce-root *::before,
+.ce-root *::after {
+  box-sizing: border-box;
+}
+
+.ce-event-list-item:hover {
+  background-color: var(--ce-bg-secondary);
+}
+
+.ce-slot-btn:hover:not(:disabled) {
+  border-color: var(--ce-border-hover);
+  background-color: var(--ce-slot-hover);
+}
+
+.ce-btn:hover:not(:disabled) {
+  border-color: var(--ce-border-hover);
+}
+
+.ce-event-chip:hover {
+  opacity: 0.8;
+}

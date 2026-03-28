@@ -1,0 +1,20 @@
+# Backend
+backend/build/
+backend/.gradle/
+backend/logs/
+
+# SDK
+sdk/node_modules/
+sdk/dist/
+
+# Widget
+widget/node_modules/
+widget/dist/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
