@@ -48,6 +48,11 @@ dependencies {
     // RRULE (RFC 5545 recurrence)
     implementation("org.dmfs:lib-recur:0.17.1")
 
+    // Ktor HTTP Client (for Google Calendar API, CalDAV)
+    implementation("io.ktor:ktor-client-core:$ktor_version")
+    implementation("io.ktor:ktor-client-cio:$ktor_version")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
+
     // Connection Pool
     implementation("com.zaxxer:HikariCP:5.1.0")
 

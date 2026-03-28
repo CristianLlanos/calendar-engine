@@ -15,6 +15,7 @@ fun main(args: Array<String>): Unit = EngineMain.main(args)
 fun Application.module() {
     // Config
     DatabaseConfig.init(environment)
+    com.calendarengine.config.SyncConfig.init(environment)
 
     // Plugins
     configureCallLogging()
@@ -36,5 +37,6 @@ fun Application.module() {
         bookingUrlRoutes(container.resolve())
         availabilityRoutes(container.resolve())
         bookingRoutes(container.resolve())
+        syncRoutes(container.resolve(), container.resolve(), container.resolve())
     }
 }

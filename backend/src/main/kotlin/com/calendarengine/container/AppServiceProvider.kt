@@ -12,7 +12,15 @@ import com.calendarengine.modules.event.EventService
 import com.calendarengine.modules.event.ICalExporter
 import com.calendarengine.modules.event.RruleExpander
 import com.calendarengine.modules.event.actions.*
+import com.calendarengine.modules.sync.ConnectionService
+import com.calendarengine.modules.sync.ExternalBusyBlockService
+import com.calendarengine.modules.sync.GoogleCalendarSyncService
+import com.calendarengine.modules.sync.actions.GoogleOAuthAction
 import com.calendarengine.modules.tenant.TenantService
+import io.ktor.client.*
+import io.ktor.client.engine.cio.*
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.serialization.kotlinx.json.*
 
 class AppServiceProvider : ServiceProvider {
     override fun register(container: Container) {
@@ -38,5 +46,16 @@ class AppServiceProvider : ServiceProvider {
         container.singleton<CreateBookingAction> { CreateBookingAction(resolve(), resolve()) }
         container.singleton<CancelBookingAction> { CancelBookingAction(resolve()) }
         container.singleton<BookingService> { BookingService(resolve(), resolve()) }
+
+        // Sync module
+        container.singleton<HttpClient> {
+            HttpClient(CIO) {
+                install(ContentNegotiation) { json() }
+            }
+        }
+        container.singleton<ExternalBusyBlockService> { ExternalBusyBlockService() }
+        container.singleton<GoogleOAuthAction> { GoogleOAuthAction(resolve()) }
+        container.singleton<ConnectionService> { ConnectionService() }
+        container.singleton<GoogleCalendarSyncService> { GoogleCalendarSyncService(resolve(), resolve(), resolve()) }
     }
 }
