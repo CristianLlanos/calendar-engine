@@ -1,21 +1,27 @@
 package com.calendarengine
 
 import com.calendarengine.config.DatabaseConfig
+import com.calendarengine.config.EventConfig
+import com.calendarengine.config.SyncConfig
 import com.calendarengine.container.AppServiceProvider
 import com.calendarengine.container.Dependencies
 import com.calendarengine.container.resolve
+import com.calendarengine.modules.sync.SyncPollingScheduler
 import com.calendarengine.plugins.*
 import com.calendarengine.routes.*
 import io.ktor.server.application.*
 import io.ktor.server.netty.*
 import io.ktor.server.routing.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 
 fun main(args: Array<String>): Unit = EngineMain.main(args)
 
 fun Application.module() {
     // Config
     DatabaseConfig.init(environment)
-    com.calendarengine.config.SyncConfig.init(environment)
+    SyncConfig.init(environment)
+    EventConfig.init(environment)
 
     // Plugins
     configureCallLogging()
@@ -39,4 +45,8 @@ fun Application.module() {
         bookingRoutes(container.resolve())
         syncRoutes(container.resolve(), container.resolve(), container.resolve())
     }
+
+    // Start polling scheduler if configured
+    val scheduler = container.resolve<SyncPollingScheduler>()
+    scheduler.start(CoroutineScope(Dispatchers.IO))
 }
