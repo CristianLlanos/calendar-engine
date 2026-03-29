@@ -38,29 +38,30 @@ class AppServiceProvider : ServiceProvider {
         // Event bus
         container.register(EventServiceProvider())
 
-        container.singleton<TenantService> { TenantService() }
-        container.singleton<CalendarService> { CalendarService() }
+        // No-arg services (auto-resolved)
+        container.singleton<TenantService> { resolve() }
+        container.singleton<CalendarService> { resolve() }
+        container.singleton<RruleExpander> { resolve() }
+        container.singleton<ICalExporter> { resolve() }
+        container.singleton<BookingUrlService> { resolve() }
+        container.singleton<ExternalBusyBlockService> { resolve() }
+        container.singleton<ConnectionService> { resolve() }
+        container.singleton<BookingCreatedTableListener> { resolve() }
+        container.singleton<BookingCancelledTableListener> { resolve() }
 
-        // Event module
-        container.singleton<RruleExpander> { RruleExpander() }
-        container.singleton<ICalExporter> { ICalExporter() }
-        container.singleton<CreateEventAction> { CreateEventAction() }
-        container.singleton<UpdateEventAction> { UpdateEventAction() }
-        container.singleton<DeleteEventAction> { DeleteEventAction() }
-        container.singleton<UpdateOccurrenceAction> { UpdateOccurrenceAction() }
-        container.singleton<ExpandOccurrencesAction> { ExpandOccurrencesAction(resolve()) }
-        container.singleton<EventService> { EventService(resolve(), resolve(), resolve(), resolve(), resolve(), resolve()) }
+        // Event actions (auto-resolved via constructor injection)
+        container.singleton<CreateEventAction> { resolve() }
+        container.singleton<UpdateEventAction> { resolve() }
+        container.singleton<DeleteEventAction> { resolve() }
+        container.singleton<UpdateOccurrenceAction> { resolve() }
+        container.singleton<ExpandOccurrencesAction> { resolve() }
+        container.singleton<EventService> { resolve() }
 
-        // Notification listeners
-        container.singleton<BookingCreatedTableListener> { BookingCreatedTableListener() }
-        container.singleton<BookingCancelledTableListener> { BookingCancelledTableListener() }
-
-        // Booking module
-        container.singleton<BookingUrlService> { BookingUrlService() }
-        container.singleton<CalculateAvailabilityAction> { CalculateAvailabilityAction(resolve()) }
-        container.singleton<CreateBookingAction> { CreateBookingAction(resolve(), resolve()) }
-        container.singleton<CancelBookingAction> { CancelBookingAction(resolve()) }
-        container.singleton<BookingService> { BookingService(resolve(), resolve()) }
+        // Booking actions (auto-resolved via constructor injection)
+        container.singleton<CalculateAvailabilityAction> { resolve() }
+        container.singleton<CreateBookingAction> { resolve() }
+        container.singleton<CancelBookingAction> { resolve() }
+        container.singleton<BookingService> { resolve() }
 
         // Sync module
         container.singleton<HttpClient> {
@@ -68,12 +69,10 @@ class AppServiceProvider : ServiceProvider {
                 install(ContentNegotiation) { json() }
             }
         }
-        container.singleton<ExternalBusyBlockService> { ExternalBusyBlockService() }
-        container.singleton<GoogleOAuthAction> { GoogleOAuthAction(resolve()) }
-        container.singleton<ConnectionService> { ConnectionService() }
-        container.singleton<GoogleCalendarSyncService> { GoogleCalendarSyncService(resolve(), resolve(), resolve()) }
-        container.singleton<AppleCalDavSyncService> { AppleCalDavSyncService(resolve(), resolve()) }
-        container.singleton<SyncPollingScheduler> { SyncPollingScheduler(resolve(), resolve()) }
+        container.singleton<GoogleOAuthAction> { resolve() }
+        container.singleton<GoogleCalendarSyncService> { resolve() }
+        container.singleton<AppleCalDavSyncService> { resolve() }
+        container.singleton<SyncPollingScheduler> { resolve() }
 
         // Subscribe listeners to events
         val subscriber = container.resolve<Subscriber>()
