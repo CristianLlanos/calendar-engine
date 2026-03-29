@@ -39,6 +39,7 @@ curl -X POST http://localhost:7730/api/calendar/tenants \
 ## Documentacion
 
 - [Guia de inicio rapido](docs/guia-inicio-rapido.md)
+- [Modo plugin (integrar en Ktor existente)](docs/plugin-mode.md)
 - [Arquitectura](docs/arquitectura.md)
 - [Backend](docs/backend.md)
 - [Referencia API](docs/referencia-api.md)
