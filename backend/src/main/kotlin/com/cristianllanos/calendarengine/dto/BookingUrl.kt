@@ -2,6 +2,7 @@ package com.cristianllanos.calendarengine.dto
 
 import kotlinx.serialization.Serializable
 
+/** Response DTO for a booking URL with its availability windows. */
 @Serializable
 data class BookingUrlResponse(
     val id: Int,
@@ -24,6 +25,7 @@ data class BookingUrlResponse(
     val createdAt: String,
 )
 
+/** Response DTO for a single availability window within a booking URL. */
 @Serializable
 data class AvailabilityWindowResponse(
     val id: Int,
@@ -32,6 +34,7 @@ data class AvailabilityWindowResponse(
     val endTime: String,
 )
 
+/** Request DTO for creating a new booking URL. */
 @Serializable
 data class CreateBookingUrlRequest(
     val calendarId: Int,
@@ -50,6 +53,7 @@ data class CreateBookingUrlRequest(
     val availabilityWindows: List<CreateAvailabilityWindowRequest> = emptyList(),
 )
 
+/** Request DTO for creating an availability window within a booking URL. */
 @Serializable
 data class CreateAvailabilityWindowRequest(
     val dayOfWeek: Int,
@@ -57,6 +61,7 @@ data class CreateAvailabilityWindowRequest(
     val endTime: String,
 )
 
+/** Request DTO for partially updating a booking URL. All fields are optional. */
 @Serializable
 data class UpdateBookingUrlRequest(
     val slug: String? = null,

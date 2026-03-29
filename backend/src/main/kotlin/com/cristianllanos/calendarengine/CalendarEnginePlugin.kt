@@ -15,6 +15,21 @@ import io.ktor.server.routing.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 
+/**
+ * Ktor application plugin that installs the full calendar engine (routes, services, sync scheduler).
+ *
+ * Example usage:
+ * ```kotlin
+ * fun Application.module() {
+ *     install(CalendarEngine) {
+ *         routePrefix = "/api/calendar"
+ *         sync {
+ *             google { enabled = true; clientId = "..."; clientSecret = "..." }
+ *         }
+ *     }
+ * }
+ * ```
+ */
 val CalendarEngine = createApplicationPlugin(
     name = "CalendarEngine",
     createConfiguration = ::CalendarEngineConfig,

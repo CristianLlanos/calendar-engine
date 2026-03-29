@@ -10,6 +10,7 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
+/** Registers calendar CRUD routes plus get-by-ID and public calendar listing. */
 fun Route.calendarRoutes(calendarService: CalendarService) {
     crudRoutes<CalendarResponse, CreateCalendarRequest, UpdateCalendarRequest>(
         path = "calendars",

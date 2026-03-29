@@ -10,6 +10,7 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
+/** Registers booking URL CRUD routes (list, create, get by ID, update, delete). */
 fun Route.bookingUrlRoutes(bookingUrlService: BookingUrlService) {
     route("/booking-urls") {
         get {

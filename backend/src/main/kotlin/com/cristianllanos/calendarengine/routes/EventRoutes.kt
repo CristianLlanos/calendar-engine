@@ -13,6 +13,7 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
+/** Registers event routes scoped to a calendar (list occurrences, CRUD, occurrence updates, scoped deletes). */
 fun Route.eventRoutes(eventService: EventService) {
     route("/calendars/{calendarId}/events") {
         get {

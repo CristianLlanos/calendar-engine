@@ -8,8 +8,18 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.TimeZone
 
+/**
+ * Expands RFC 5545 recurrence rules (RRULE) into concrete occurrence dates within a given range.
+ *
+ * Uses the lib-recur library to parse the RRULE string and generate occurrence timestamps,
+ * converting between Java time types and the library's RFC 5545 DateTime representation.
+ */
 class RruleExpander {
 
+    /**
+     * Expands the given RRULE from [dtstart] and returns occurrence start times that fall within [[rangeStart], [rangeEnd]].
+     * @param maxOccurrences safety cap to prevent unbounded expansion
+     */
     fun expand(
         rrule: String,
         dtstart: LocalDateTime,

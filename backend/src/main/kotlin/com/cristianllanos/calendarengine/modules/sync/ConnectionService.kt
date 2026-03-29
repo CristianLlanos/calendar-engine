@@ -9,6 +9,7 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.LocalDateTime
 
+/** Response DTO for an external calendar connection. */
 data class ConnectionResponse(
     val id: Int,
     val tenantId: Int,
@@ -21,6 +22,7 @@ data class ConnectionResponse(
     val createdAt: String,
 )
 
+/** Request DTO for creating an external calendar connection. */
 data class CreateConnectionRequest(
     val calendarId: Int,
     val provider: String,
@@ -28,14 +30,17 @@ data class CreateConnectionRequest(
     val syncMode: String = SyncMode.ON_DEMAND.name,
 )
 
+/** Manages external calendar connections (Google, Apple, etc.) for a tenant. */
 class ConnectionService {
 
+    /** Lists all external calendar connections for the given tenant. */
     fun list(tenantId: Int): List<ConnectionResponse> = transaction {
         ExternalCalendarConnections.selectAll()
             .where { ExternalCalendarConnections.tenantId eq tenantId }
             .map { it.toResponse() }
     }
 
+    /** Creates a new external calendar connection after verifying the calendar belongs to the tenant. */
     fun create(tenantId: Int, request: CreateConnectionRequest): ConnectionResponse = transaction {
         Calendars.selectAll()
             .where { (Calendars.id eq request.calendarId) and (Calendars.tenantId eq tenantId) }
@@ -58,6 +63,7 @@ class ConnectionService {
             .toResponse()
     }
 
+    /** Deletes a connection and its associated busy blocks (via FK cascade). */
     fun delete(connectionId: Int, tenantId: Int) = transaction {
         // Busy blocks cascade on delete via FK
         val deleted = ExternalCalendarConnections.deleteWhere {

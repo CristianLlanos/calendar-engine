@@ -8,10 +8,12 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
+/** Exports calendar events to iCalendar (RFC 5545) format. */
 class ICalExporter {
 
     private val icalDateFormat = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss")
 
+    /** Generates a VCALENDAR string containing all events for the given calendar, including RRULE for recurring events. */
     fun export(calendarId: Int, tenantId: Int): String = transaction {
         val calendar = Calendars.selectAll()
             .where { (Calendars.id eq calendarId) and (Calendars.tenantId eq tenantId) }

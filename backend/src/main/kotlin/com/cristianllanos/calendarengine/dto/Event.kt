@@ -2,6 +2,7 @@ package com.cristianllanos.calendarengine.dto
 
 import kotlinx.serialization.Serializable
 
+/** Response DTO for a calendar event, optionally including its recurrence rule. */
 @Serializable
 data class EventResponse(
     val id: Int,
@@ -20,6 +21,7 @@ data class EventResponse(
     val updatedAt: String,
 )
 
+/** Response DTO for an RFC 5545 recurrence rule attached to an event. */
 @Serializable
 data class RecurrenceRuleResponse(
     val id: Int,
@@ -28,6 +30,7 @@ data class RecurrenceRuleResponse(
     val timezone: String,
 )
 
+/** A single occurrence of an event, which may be a recurring instance or an exception. */
 @Serializable
 data class EventOccurrence(
     val eventId: Int,
@@ -44,6 +47,7 @@ data class EventOccurrence(
     val originalDate: String? = null,
 )
 
+/** Request DTO for creating a new event, optionally with a recurrence rule. */
 @Serializable
 data class CreateEventRequest(
     val title: String,
@@ -56,12 +60,14 @@ data class CreateEventRequest(
     val recurrence: CreateRecurrenceRequest? = null,
 )
 
+/** Request DTO for attaching a recurrence rule (RRULE) to an event. */
 @Serializable
 data class CreateRecurrenceRequest(
     val rrule: String,
     val timezone: String? = null,
 )
 
+/** Request DTO for partially updating an event. All fields are optional. */
 @Serializable
 data class UpdateEventRequest(
     val title: String? = null,
@@ -73,6 +79,7 @@ data class UpdateEventRequest(
     val status: String? = null,
 )
 
+/** Request DTO for updating a single occurrence of a recurring event. */
 @Serializable
 data class UpdateOccurrenceRequest(
     val title: String? = null,

@@ -3,6 +3,7 @@ package com.cristianllanos.calendarengine.models
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.javatime.datetime
 
+/** Exposed table for connections linking internal calendars to external provider calendars. */
 object ExternalCalendarConnections : Table("external_calendar_connections") {
     val id = integer("id").autoIncrement()
     val tenantId = integer("tenant_id").references(Tenants.id)

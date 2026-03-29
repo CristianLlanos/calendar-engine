@@ -9,8 +9,10 @@ import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 
+/** Thrown when a request conflicts with the current state of a resource. */
 class ConflictException(message: String) : RuntimeException(message)
 
+/** Installs StatusPages with exception-to-HTTP-status mappings for common error types. */
 fun Application.configureStatusPages() {
     install(StatusPages) {
         exception<UnauthorizedException> { call, cause ->

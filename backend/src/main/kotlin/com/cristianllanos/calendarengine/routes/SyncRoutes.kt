@@ -15,6 +15,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
 
+/** Registers sync routes: Google OAuth flow, connection management, manual sync trigger, and webhook endpoint. */
 fun Route.syncRoutes(
     googleOAuthAction: GoogleOAuthAction,
     connectionService: ConnectionService,

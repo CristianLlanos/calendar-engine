@@ -11,6 +11,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.LocalDateTime
 import java.time.LocalTime
 
+/** CRUD operations for booking URL configuration, including availability windows. */
 class BookingUrlService {
 
     companion object {
@@ -20,6 +21,7 @@ class BookingUrlService {
         )
     }
 
+    /** Returns a paginated list of booking URLs with their availability windows. */
     fun getAll(tenantId: Int, params: PaginationParams): PaginatedResponse<BookingUrlResponse> = transaction {
         val condition = buildSearchCondition(
             BookingUrls.tenantId, tenantId, params.search,
@@ -46,6 +48,7 @@ class BookingUrlService {
         )
     }
 
+    /** Retrieves a single booking URL by ID, including its availability windows. */
     fun getById(id: Int, tenantId: Int): BookingUrlResponse = transaction {
         val row = BookingUrls.selectAll()
             .where { (BookingUrls.id eq id) and (BookingUrls.tenantId eq tenantId) }
@@ -55,6 +58,7 @@ class BookingUrlService {
         row.toBookingUrlResponse().copy(availabilityWindows = windows[id] ?: emptyList())
     }
 
+    /** Creates a new booking URL with availability windows, enforcing unique slug per tenant. */
     fun create(tenantId: Int, request: CreateBookingUrlRequest): BookingUrlResponse = transaction {
         // Verify calendar belongs to tenant
         Calendars.selectAll()
@@ -94,6 +98,7 @@ class BookingUrlService {
             .copy(availabilityWindows = windows)
     }
 
+    /** Partially updates a booking URL; replaces availability windows if provided. */
     fun update(id: Int, tenantId: Int, request: UpdateBookingUrlRequest): BookingUrlResponse = transaction {
         // Check slug uniqueness if changing
         request.slug?.let { newSlug ->
@@ -133,6 +138,7 @@ class BookingUrlService {
         row.toBookingUrlResponse().copy(availabilityWindows = windows[id] ?: emptyList())
     }
 
+    /** Deletes a booking URL, failing if it has existing bookings. */
     fun delete(id: Int, tenantId: Int) = transaction {
         deleteWithConflictChecks(
             table = BookingUrls, idColumn = BookingUrls.id, id = id,

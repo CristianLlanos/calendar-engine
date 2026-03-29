@@ -7,6 +7,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import java.time.LocalDate
 
+/** Registers public availability query routes for a booking URL (single date and date range). */
 fun Route.availabilityRoutes(calculateAvailabilityAction: CalculateAvailabilityAction) {
     route("/booking-urls/{id}/availability") {
         // Public endpoint — no tenant auth required

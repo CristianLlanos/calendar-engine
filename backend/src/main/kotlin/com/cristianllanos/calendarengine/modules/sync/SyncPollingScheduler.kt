@@ -9,6 +9,7 @@ import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.slf4j.LoggerFactory
 
+/** Periodically polls all enabled external calendar connections for sync, dispatching to the appropriate provider service. */
 class SyncPollingScheduler(
     private val googleSyncService: GoogleCalendarSyncService,
     private val appleSyncService: AppleCalDavSyncService,
@@ -17,6 +18,7 @@ class SyncPollingScheduler(
     private val logger = LoggerFactory.getLogger(SyncPollingScheduler::class.java)
     private var job: Job? = null
 
+    /** Starts the polling loop if sync mode is POLLING; no-op otherwise. */
     fun start(scope: CoroutineScope) {
         if (SyncConfig.config.mode != SyncMode.POLLING.name) {
             logger.info("Sync polling disabled (mode=${SyncConfig.config.mode})")
@@ -34,6 +36,7 @@ class SyncPollingScheduler(
         }
     }
 
+    /** Cancels the polling coroutine. */
     fun stop() {
         job?.cancel()
     }

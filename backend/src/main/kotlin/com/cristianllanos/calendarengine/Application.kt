@@ -7,8 +7,10 @@ import com.cristianllanos.calendarengine.plugins.*
 import io.ktor.server.application.*
 import io.ktor.server.netty.*
 
+/** Starts the Ktor server using Netty in standalone mode. */
 fun main(args: Array<String>): Unit = EngineMain.main(args)
 
+/** Configures the application module for standalone mode with database, plugins, and the CalendarEngine plugin. */
 fun Application.module() {
     // Standalone mode: connect to DB from application.conf
     DatabaseConfig.init(environment)

@@ -4,6 +4,7 @@ import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.javatime.datetime
 
+/** Exposed table for busy time blocks imported from external calendar connections. */
 object ExternalBusyBlocks : Table("external_busy_blocks") {
     val id = integer("id").autoIncrement()
     val connectionId = integer("connection_id").references(ExternalCalendarConnections.id, onDelete = ReferenceOption.CASCADE)

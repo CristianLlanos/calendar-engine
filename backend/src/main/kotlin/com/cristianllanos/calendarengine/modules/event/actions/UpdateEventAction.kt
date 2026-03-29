@@ -9,8 +9,10 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.LocalDateTime
 
+/** Partially updates an existing calendar event's properties. */
 class UpdateEventAction {
 
+    /** Applies the non-null fields from the request to the event and returns the updated result. */
     fun execute(eventId: Int, calendarId: Int, tenantId: Int, request: UpdateEventRequest): EventResponse = transaction {
         Events.selectAll()
             .where { (Events.id eq eventId) and (Events.calendarId eq calendarId) and (Events.tenantId eq tenantId) }

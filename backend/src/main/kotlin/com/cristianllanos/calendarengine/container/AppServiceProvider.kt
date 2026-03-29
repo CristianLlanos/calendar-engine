@@ -32,7 +32,9 @@ import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.serialization.kotlinx.json.*
 
+/** Registers all calendar engine services, actions, and event subscribers into the DI container. */
 class AppServiceProvider {
+    /** Binds all service singletons and wires event subscribers into the given [container]. */
     fun register(container: Container) {
         container.register(EventServiceProvider())
 

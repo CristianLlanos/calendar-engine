@@ -12,6 +12,7 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
+/** Registers booking routes (public create, tenant-scoped list/get/cancel). */
 fun Route.bookingRoutes(bookingService: BookingService) {
     route("/bookings") {
         // Public — anyone with email+phone can book

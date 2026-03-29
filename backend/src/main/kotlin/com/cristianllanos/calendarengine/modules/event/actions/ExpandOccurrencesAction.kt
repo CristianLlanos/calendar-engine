@@ -11,10 +11,19 @@ import java.time.Duration
 import java.time.LocalDateTime
 import java.time.ZoneId
 
+/**
+ * Materializes event occurrences within a time range for display.
+ *
+ * For non-recurring events, includes them directly if they overlap the range.
+ * For recurring events, expands the RRULE via [RruleExpander], then applies
+ * recurrence exceptions: excluded dates are skipped, and overridden dates use
+ * the exception's custom values. Results are sorted by start time.
+ */
 class ExpandOccurrencesAction(
     private val rruleExpander: RruleExpander,
 ) {
 
+    /** Returns all event occurrences (both one-off and expanded recurring) within the given time range, sorted by start time. */
     fun execute(
         calendarId: Int,
         tenantId: Int,

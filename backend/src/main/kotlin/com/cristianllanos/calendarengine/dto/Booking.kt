@@ -2,6 +2,7 @@ package com.cristianllanos.calendarengine.dto
 
 import kotlinx.serialization.Serializable
 
+/** Response DTO for a booking. */
 @Serializable
 data class BookingResponse(
     val id: Int,
@@ -22,6 +23,7 @@ data class BookingResponse(
     val createdAt: String,
 )
 
+/** Request DTO for creating a new booking against a booking URL. */
 @Serializable
 data class CreateBookingRequest(
     val bookingUrlId: Int,
@@ -34,6 +36,7 @@ data class CreateBookingRequest(
     val notes: String? = null,
 )
 
+/** Request DTO for cancelling an existing booking. */
 @Serializable
 data class CancelBookingRequest(
     val reason: String? = null,

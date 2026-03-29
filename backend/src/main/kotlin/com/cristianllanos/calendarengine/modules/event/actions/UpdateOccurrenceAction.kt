@@ -9,8 +9,10 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.Duration
 import java.time.LocalDateTime
 
+/** Applies per-occurrence overrides (title, time, location, etc.) to a single occurrence of a recurring event. */
 class UpdateOccurrenceAction {
 
+    /** Creates or updates a recurrence exception for the specified occurrence date. */
     fun execute(
         eventId: Int,
         calendarId: Int,

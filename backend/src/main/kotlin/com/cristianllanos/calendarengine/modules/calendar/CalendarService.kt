@@ -9,6 +9,7 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.LocalDateTime
 
+/** CRUD operations for calendar management within a tenant. */
 class CalendarService {
 
     companion object {
@@ -18,6 +19,7 @@ class CalendarService {
         )
     }
 
+    /** Returns a paginated list of calendars for the given tenant, with optional search. */
     fun getAll(tenantId: Int, params: PaginationParams): PaginatedResponse<CalendarResponse> = transaction {
         val condition = buildSearchCondition(
             Calendars.tenantId, tenantId, params.search,
@@ -34,12 +36,14 @@ class CalendarService {
         ) { it.toCalendarResponse() }
     }
 
+    /** Retrieves a single calendar by ID within the given tenant. */
     fun getById(id: Int, tenantId: Int): CalendarResponse = transaction {
         Calendars.selectAll().where { (Calendars.id eq id) and (Calendars.tenantId eq tenantId) }
             .firstOrNull()?.toCalendarResponse()
             ?: throw NoSuchElementException("Calendar not found")
     }
 
+    /** Returns a paginated list of all publicly visible calendars across tenants. */
     fun getPublicCalendars(params: PaginationParams): PaginatedResponse<CalendarResponse> = transaction {
         val condition = Op.build { Calendars.visibility eq CalendarVisibility.PUBLIC.name }
         val total = Calendars.selectAll().where { condition }.count()
@@ -53,6 +57,7 @@ class CalendarService {
         ) { it.toCalendarResponse() }
     }
 
+    /** Creates a new calendar for the given tenant. */
     fun create(tenantId: Int, request: CreateCalendarRequest): CalendarResponse = transaction {
         val now = LocalDateTime.now()
         val id = Calendars.insert {
@@ -68,6 +73,7 @@ class CalendarService {
         Calendars.selectAll().where { Calendars.id eq id }.first().toCalendarResponse()
     }
 
+    /** Partially updates a calendar's properties. */
     fun update(id: Int, tenantId: Int, request: UpdateCalendarRequest): CalendarResponse = transaction {
         Calendars.update({ (Calendars.id eq id) and (Calendars.tenantId eq tenantId) }) {
             request.name?.let { name -> it[Calendars.name] = name }
@@ -81,6 +87,7 @@ class CalendarService {
             ?: throw NoSuchElementException("Calendar not found")
     }
 
+    /** Deletes a calendar, failing if it still has events or booking URLs. */
     fun delete(id: Int, tenantId: Int) = transaction {
         deleteWithConflictChecks(
             table = Calendars, idColumn = Calendars.id, id = id,

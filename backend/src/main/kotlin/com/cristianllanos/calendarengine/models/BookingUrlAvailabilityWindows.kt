@@ -4,6 +4,7 @@ import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.javatime.time
 
+/** Exposed table for weekly availability time windows associated with a booking URL. */
 object BookingUrlAvailabilityWindows : Table("booking_url_availability_windows") {
     val id = integer("id").autoIncrement()
     val bookingUrlId = integer("booking_url_id").references(BookingUrls.id, onDelete = ReferenceOption.CASCADE)

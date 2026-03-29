@@ -9,10 +9,12 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.LocalDateTime
 
+/** Persists booking-created events to the system_events table for downstream processing. */
 class BookingCreatedTableListener : Listener<BookingCreatedEvent> {
 
     private val json = Json { encodeDefaults = true }
 
+    /** Serializes the booking payload and inserts a BOOKING_CREATED system event record. */
     override fun handle(event: BookingCreatedEvent) {
         transaction {
             SystemEvents.insert {

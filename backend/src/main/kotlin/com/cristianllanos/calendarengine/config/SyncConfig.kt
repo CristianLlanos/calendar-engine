@@ -2,6 +2,7 @@ package com.cristianllanos.calendarengine.config
 
 import io.ktor.server.application.*
 
+/** Holds Google OAuth credentials and webhook settings for calendar sync. */
 data class GoogleOAuthConfig(
     val enabled: Boolean = false,
     val clientId: String = "",
@@ -9,6 +10,7 @@ data class GoogleOAuthConfig(
     val webhookBaseUrl: String = "",
 )
 
+/** Configuration data for external calendar synchronization (providers, mode, and polling interval). */
 data class SyncConfiguration(
     val google: GoogleOAuthConfig = GoogleOAuthConfig(),
     val appleEnabled: Boolean = false,
@@ -16,9 +18,11 @@ data class SyncConfiguration(
     val pollingIntervalMinutes: Int = 15,
 )
 
+/** Global singleton holding the active sync configuration, populated from application.conf or the plugin DSL. */
 object SyncConfig {
     var config: SyncConfiguration = SyncConfiguration()
 
+    /** Initializes sync configuration from the Ktor [ApplicationEnvironment] properties. */
     fun init(environment: ApplicationEnvironment) {
         config = SyncConfiguration(
             google = GoogleOAuthConfig(

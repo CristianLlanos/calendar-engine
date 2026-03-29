@@ -4,6 +4,7 @@ import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.javatime.datetime
 
+/** Exposed table for individual occurrence overrides or exclusions within a recurring event. */
 object RecurrenceExceptions : Table("recurrence_exceptions") {
     val id = integer("id").autoIncrement()
     val eventId = integer("event_id").references(Events.id, onDelete = ReferenceOption.CASCADE)

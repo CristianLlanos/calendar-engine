@@ -15,12 +15,14 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.LocalDateTime
 
+/** Handles Google OAuth 2.0 authorization, token exchange, and token refresh for calendar sync. */
 class GoogleOAuthAction(
     private val httpClient: HttpClient,
 ) {
 
     private val json = Json { ignoreUnknownKeys = true }
 
+    /** Builds the Google OAuth consent URL with calendar read-only scope. */
     fun buildAuthUrl(calendarId: Int, tenantId: Int, redirectUri: String): String {
         val config = SyncConfig.config.google
         val state = "$tenantId:$calendarId"
@@ -35,6 +37,7 @@ class GoogleOAuthAction(
             "&state=${state.encodeURLParameter()}"
     }
 
+    /** Exchanges an authorization code for access and refresh tokens, persisting them in the database. */
     suspend fun exchangeCode(code: String, tenantId: Int, redirectUri: String): OAuthTokenResult {
         val config = SyncConfig.config.google
 
@@ -78,6 +81,7 @@ class GoogleOAuthAction(
         )
     }
 
+    /** Returns a valid access token for the tenant, refreshing it automatically if expired. */
     suspend fun getValidAccessToken(tenantId: Int): String {
         val token = transaction {
             OAuthTokens.selectAll()
@@ -152,6 +156,7 @@ private data class GoogleTokenResponse(
     val refreshToken get() = refresh_token
 }
 
+/** Result of an OAuth token exchange or refresh. */
 data class OAuthTokenResult(
     val accessToken: String,
     val expiresAt: String,

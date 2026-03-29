@@ -14,6 +14,7 @@ import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 
+/** Synchronizes busy blocks from Google Calendar using the Events API with incremental sync token support. */
 class GoogleCalendarSyncService(
     private val httpClient: HttpClient,
     private val oauthAction: GoogleOAuthAction,
@@ -22,6 +23,7 @@ class GoogleCalendarSyncService(
 
     private val json = Json { ignoreUnknownKeys = true }
 
+    /** Syncs a connection, using incremental sync if a sync token exists or falling back to a full sync. */
     suspend fun syncConnection(connectionId: Int) {
         val connection = transaction {
             ExternalCalendarConnections.selectAll()

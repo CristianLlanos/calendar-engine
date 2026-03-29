@@ -6,14 +6,17 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.LocalDateTime
 
+/** CRUD operations for tenant management. */
 class TenantService {
 
+    /** Retrieves a tenant by its ID. */
     fun getById(id: Int): TenantResponse = transaction {
         Tenants.selectAll().where { Tenants.id eq id }
             .firstOrNull()?.toTenantResponse()
             ?: throw NoSuchElementException("Tenant not found")
     }
 
+    /** Creates a new tenant, enforcing unique slug. */
     fun create(request: CreateTenantRequest): TenantResponse = transaction {
         val existing = Tenants.selectAll().where { Tenants.slug eq request.slug }.firstOrNull()
         if (existing != null) throw IllegalArgumentException("Tenant slug already exists")
@@ -28,6 +31,7 @@ class TenantService {
         Tenants.selectAll().where { Tenants.id eq id }.first().toTenantResponse()
     }
 
+    /** Partially updates a tenant, enforcing unique slug if changed. */
     fun update(id: Int, request: UpdateTenantRequest): TenantResponse = transaction {
         request.slug?.let { newSlug ->
             val existing = Tenants.selectAll()

@@ -9,15 +9,27 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.*
 
+/**
+ * Computes available booking slots for a given booking URL and date range.
+ *
+ * The algorithm works as follows:
+ * 1. Loads the booking URL's availability windows for the requested day-of-week.
+ * 2. Generates candidate time slots by stepping through each window at the minimum duration interval (plus buffers).
+ * 3. Loads all blocking intervals: calendar events (including recurrence expansion), external busy blocks, and existing bookings (with buffer padding).
+ * 4. Applies lead-time constraints (min/max) and per-day/per-week booking caps.
+ * 5. For each candidate, filters out durations that would overlap any blocked interval, returning only slots with at least one viable duration.
+ */
 class CalculateAvailabilityAction(
     private val rruleExpander: RruleExpander,
 ) {
 
+    /** Returns available slots for a single date. */
     fun forDate(bookingUrlId: Int, date: LocalDate): DayAvailability {
         val slots = calculateSlots(bookingUrlId, date)
         return DayAvailability(date = date.toString(), slots = slots)
     }
 
+    /** Returns available slots for each day in the inclusive date range. */
     fun forRange(bookingUrlId: Int, startDate: LocalDate, endDate: LocalDate): List<DayAvailability> {
         val days = mutableListOf<DayAvailability>()
         var current = startDate
@@ -220,7 +232,9 @@ private data class TimeWindow(val start: LocalTime, val end: LocalTime)
 
 private data class CandidateSlot(val start: LocalDateTime)
 
+/** A half-open time interval used for overlap detection in availability calculations. */
 data class TimeInterval(val start: LocalDateTime, val end: LocalDateTime) {
+    /** Returns true if this interval overlaps with [other]. */
     fun overlaps(other: TimeInterval): Boolean {
         return start.isBefore(other.end) && end.isAfter(other.start)
     }

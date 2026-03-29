@@ -2,6 +2,7 @@ package com.cristianllanos.calendarengine.dto
 
 import kotlinx.serialization.Serializable
 
+/** Response DTO for a calendar. */
 @Serializable
 data class CalendarResponse(
     val id: Int,
@@ -14,6 +15,7 @@ data class CalendarResponse(
     val createdAt: String,
 )
 
+/** Request DTO for creating a new calendar. */
 @Serializable
 data class CreateCalendarRequest(
     val name: String,
@@ -23,6 +25,7 @@ data class CreateCalendarRequest(
     val visibility: String = "PRIVATE",
 )
 
+/** Request DTO for partially updating a calendar. All fields are optional. */
 @Serializable
 data class UpdateCalendarRequest(
     val name: String? = null,

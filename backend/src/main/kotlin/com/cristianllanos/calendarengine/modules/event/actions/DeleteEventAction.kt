@@ -9,8 +9,15 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.greaterEq
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.LocalDateTime
 
+/** Deletes events with support for recurring event scopes (ALL, THIS, FOLLOWING). */
 class DeleteEventAction {
 
+    /**
+     * Deletes an event according to the given [scope].
+     * - ALL: removes the event, its exceptions, and recurrence rule.
+     * - THIS: adds an exclusion for a single occurrence.
+     * - FOLLOWING: truncates the RRULE with an UNTIL clause and removes later exceptions.
+     */
     fun execute(eventId: Int, calendarId: Int, tenantId: Int, scope: DeleteScope, occurrenceDate: String? = null) = transaction {
         val event = Events.selectAll()
             .where { (Events.id eq eventId) and (Events.calendarId eq calendarId) and (Events.tenantId eq tenantId) }
@@ -94,6 +101,7 @@ class DeleteEventAction {
     }
 }
 
+/** Scope of a delete operation on a potentially recurring event. */
 enum class DeleteScope {
     ALL,
     THIS,

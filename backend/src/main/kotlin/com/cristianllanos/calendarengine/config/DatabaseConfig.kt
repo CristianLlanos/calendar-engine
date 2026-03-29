@@ -7,6 +7,7 @@ import io.ktor.server.application.*
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 
+/** Manages database connection pooling via HikariCP and schema creation for all calendar engine tables. */
 object DatabaseConfig {
     /**
      * Initialize database connection from application.conf and create tables.

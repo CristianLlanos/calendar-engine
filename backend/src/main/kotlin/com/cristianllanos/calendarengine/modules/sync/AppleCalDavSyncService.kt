@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
+/** Synchronizes busy blocks from Apple Calendar via CalDAV REPORT requests. */
 class AppleCalDavSyncService(
     private val httpClient: HttpClient,
     private val busyBlockService: ExternalBusyBlockService,
@@ -18,6 +19,7 @@ class AppleCalDavSyncService(
 
     private val logger = LoggerFactory.getLogger(AppleCalDavSyncService::class.java)
 
+    /** Fetches events from the CalDAV endpoint and replaces all busy blocks for the connection. */
     suspend fun syncConnection(connectionId: Int) {
         val connection = transaction {
             ExternalCalendarConnections.selectAll()

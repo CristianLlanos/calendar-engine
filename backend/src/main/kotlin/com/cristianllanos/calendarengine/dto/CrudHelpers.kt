@@ -4,12 +4,30 @@ import com.cristianllanos.calendarengine.plugins.ConflictException
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 
+/** Describes a foreign-key relationship to check before deleting a record. */
 data class DeleteConflictCheck(
     val table: Table,
     val foreignKey: Expression<*>,
     val label: String,
 )
 
+/**
+ * Deletes a tenant-scoped row after verifying no foreign-key conflicts exist.
+ *
+ * ```kotlin
+ * deleteWithConflictChecks(
+ *     table = Calendars, idColumn = Calendars.id, id = 1,
+ *     tenantIdColumn = Calendars.tenantId, tenantId = 42,
+ *     notFoundMessage = "Calendar not found",
+ *     conflictChecks = listOf(
+ *         DeleteConflictCheck(Events, Events.calendarId, "{count} events reference this calendar")
+ *     ),
+ * )
+ * ```
+ *
+ * @throws ConflictException if any dependent rows are found.
+ * @throws NoSuchElementException if the target row does not exist.
+ */
 fun deleteWithConflictChecks(
     table: Table,
     idColumn: Column<Int>,
@@ -34,6 +52,12 @@ fun deleteWithConflictChecks(
     if (deleted == 0) throw NoSuchElementException(notFoundMessage)
 }
 
+/**
+ * Builds an Exposed [Op] that filters by tenant and optionally applies a LIKE search across multiple columns.
+ *
+ * @param searchColumns columns to match against when [searchTerm] is non-null.
+ * @return a combined WHERE condition.
+ */
 fun buildSearchCondition(
     tenantIdColumn: Column<Int>,
     tenantId: Int,

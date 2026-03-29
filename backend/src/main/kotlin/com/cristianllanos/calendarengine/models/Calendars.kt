@@ -3,6 +3,7 @@ package com.cristianllanos.calendarengine.models
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.javatime.datetime
 
+/** Exposed table for tenant calendars. */
 object Calendars : Table("calendars") {
     val id = integer("id").autoIncrement()
     val tenantId = integer("tenant_id").references(Tenants.id)

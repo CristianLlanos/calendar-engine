@@ -11,10 +11,12 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.LocalDateTime
 
+/** Cancels a booking, deletes its associated event, and emits a cancellation notification. */
 class CancelBookingAction(
     private val emitter: Emitter,
 ) {
 
+    /** Marks the booking as cancelled, removes the linked calendar event, and emits a [BookingCancelledEvent]. */
     fun execute(bookingId: Int, tenantId: Int, reason: String?): BookingResponse = transaction {
         val booking = Bookings.selectAll()
             .where { (Bookings.id eq bookingId) and (Bookings.tenantId eq tenantId) }

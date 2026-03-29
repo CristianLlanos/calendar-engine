@@ -3,6 +3,7 @@ package com.cristianllanos.calendarengine.models
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.javatime.datetime
 
+/** Exposed table for bookings made through booking URLs. */
 object Bookings : Table("bookings") {
     val id = integer("id").autoIncrement()
     val tenantId = integer("tenant_id").references(Tenants.id)

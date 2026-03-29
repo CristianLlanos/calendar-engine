@@ -10,6 +10,7 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
+/** Registers tenant CRUD routes (create, get by ID, update). */
 fun Route.tenantRoutes(tenantService: TenantService) {
     route("/tenants") {
         post {

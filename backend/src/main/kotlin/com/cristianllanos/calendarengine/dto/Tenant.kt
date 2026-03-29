@@ -2,6 +2,7 @@ package com.cristianllanos.calendarengine.dto
 
 import kotlinx.serialization.Serializable
 
+/** Response DTO for a tenant. */
 @Serializable
 data class TenantResponse(
     val id: Int,
@@ -11,6 +12,7 @@ data class TenantResponse(
     val createdAt: String,
 )
 
+/** Request DTO for creating a new tenant. */
 @Serializable
 data class CreateTenantRequest(
     val name: String,
@@ -18,6 +20,7 @@ data class CreateTenantRequest(
     val config: String? = null,
 )
 
+/** Request DTO for partially updating a tenant. All fields are optional. */
 @Serializable
 data class UpdateTenantRequest(
     val name: String? = null,

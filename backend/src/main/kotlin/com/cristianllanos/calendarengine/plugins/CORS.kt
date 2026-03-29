@@ -4,6 +4,7 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.cors.routing.*
 
+/** Installs CORS with permissive defaults (all hosts, common HTTP methods and headers). */
 fun Application.configureCORS() {
     install(CORS) {
         allowMethod(HttpMethod.Options)

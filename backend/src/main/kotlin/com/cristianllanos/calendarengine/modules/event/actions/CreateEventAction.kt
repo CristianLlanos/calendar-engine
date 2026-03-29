@@ -10,8 +10,10 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.LocalDateTime
 
+/** Creates a calendar event with optional recurrence rule. */
 class CreateEventAction {
 
+    /** Validates ownership and time range, creates the recurrence rule if provided, and inserts the event. */
     fun execute(calendarId: Int, tenantId: Int, request: CreateEventRequest): EventResponse = transaction {
         // Verify calendar belongs to tenant
         val calendar = Calendars.selectAll()

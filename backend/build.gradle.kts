@@ -8,6 +8,9 @@ plugins {
     kotlin("jvm") version "1.9.25"
     id("io.ktor.plugin") version "2.3.12"
     id("org.jetbrains.kotlin.plugin.serialization") version "1.9.25"
+    id("org.jetbrains.dokka") version "1.9.20"
+    signing
+    id("com.vanniktech.maven.publish") version "0.30.0"
 }
 
 group = "com.cristianllanos"
@@ -18,6 +21,44 @@ application {
 
     val isDevelopment: Boolean = project.ext.has("development")
     applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
+}
+
+signing {
+    useGpgCmd()
+}
+
+mavenPublishing {
+    publishToMavenCentral(com.vanniktech.maven.publish.SonatypeHost.CENTRAL_PORTAL)
+    signAllPublications()
+
+    coordinates("com.cristianllanos", "calendar-engine", version.toString())
+
+    pom {
+        name.set("Calendar Engine")
+        description.set("Headless multi-tenant calendar engine with bookings, RFC 5545 recurrence, Google Calendar & CalDAV sync")
+        url.set("https://github.com/CristianLlanos/calendar-engine")
+
+        licenses {
+            license {
+                name.set("MIT License")
+                url.set("https://opensource.org/licenses/MIT")
+            }
+        }
+
+        developers {
+            developer {
+                id.set("cristianllanos")
+                name.set("Cristian Llanos")
+                email.set("cristianllanos@outlook.com")
+            }
+        }
+
+        scm {
+            connection.set("scm:git:git://github.com/CristianLlanos/calendar-engine.git")
+            developerConnection.set("scm:git:ssh://github.com/CristianLlanos/calendar-engine.git")
+            url.set("https://github.com/CristianLlanos/calendar-engine")
+        }
+    }
 }
 
 repositories {

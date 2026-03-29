@@ -8,6 +8,7 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
+/** Registers the iCalendar export endpoint for a calendar. */
 fun Route.iCalRoutes(eventService: EventService) {
     get("/calendars/{calendarId}/export.ics") {
         val principal = call.tenantPrincipal()

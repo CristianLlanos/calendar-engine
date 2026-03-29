@@ -12,11 +12,13 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.LocalDate
 import java.time.LocalDateTime
 
+/** Creates a booking by validating slot availability, inserting an event and a booking record, then emitting a notification. */
 class CreateBookingAction(
     private val calculateAvailabilityAction: CalculateAvailabilityAction,
     private val emitter: Emitter,
 ) {
 
+    /** Validates the requested slot is available, creates the calendar event and booking, and emits a [BookingCreatedEvent]. */
     fun execute(request: CreateBookingRequest): BookingResponse = transaction {
         val urlRow = BookingUrls.selectAll()
             .where { BookingUrls.id eq request.bookingUrlId }

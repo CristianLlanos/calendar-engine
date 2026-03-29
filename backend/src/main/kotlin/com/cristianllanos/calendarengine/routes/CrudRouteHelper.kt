@@ -11,6 +11,7 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
+/** Registers standard CRUD routes (list, create, update, delete) for a tenant-scoped resource at the given [path]. */
 inline fun <reified TResponse : Any, reified TCreate : Any, reified TUpdate : Any> Route.crudRoutes(
     path: String,
     crossinline getAll: suspend (tenantId: Int, params: PaginationParams) -> PaginatedResponse<TResponse>,
