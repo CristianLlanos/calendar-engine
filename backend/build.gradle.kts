@@ -10,7 +10,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization") version "1.9.25"
 }
 
-group = "com.cristianllanos.calendarengine"
+group = "com.cristianllanos"
 version = "0.0.1"
 
 application {
@@ -21,6 +21,7 @@ application {
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
@@ -46,8 +47,8 @@ dependencies {
     implementation("mysql:mysql-connector-java:$mysql_version")
 
     // DI Container & Event Bus
-    implementation("com.cristianllanos:container:0.3.0")
-    implementation("com.cristianllanos:events:0.2.0")
+    implementation("com.cristianllanos:container:0.3.1")
+    implementation("com.cristianllanos:events:0.2.1")
 
     // RRULE (RFC 5545 recurrence)
     implementation("org.dmfs:lib-recur:0.17.1")
