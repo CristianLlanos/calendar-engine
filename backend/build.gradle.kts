@@ -46,8 +46,8 @@ dependencies {
     implementation("mysql:mysql-connector-java:$mysql_version")
 
     // DI Container & Event Bus
-    implementation("com.cristianllanos:container:0.2.0")
-    implementation("com.cristianllanos:events:0.1.0")
+    implementation("com.cristianllanos:container:0.3.0")
+    implementation("com.cristianllanos:events:0.2.0")
 
     // RRULE (RFC 5545 recurrence)
     implementation("org.dmfs:lib-recur:0.17.1")

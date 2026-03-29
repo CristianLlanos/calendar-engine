@@ -22,7 +22,6 @@ import com.calendarengine.modules.sync.SyncPollingScheduler
 import com.calendarengine.modules.sync.actions.GoogleOAuthAction
 import com.calendarengine.modules.tenant.TenantService
 import com.cristianllanos.container.Container
-import com.cristianllanos.container.ServiceProvider
 import com.cristianllanos.container.resolve
 import com.cristianllanos.container.singleton
 import com.cristianllanos.events.EventServiceProvider
@@ -33,48 +32,42 @@ import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.serialization.kotlinx.json.*
 
-class AppServiceProvider : ServiceProvider {
-    override fun register(container: Container) {
-        // Event bus
+class AppServiceProvider {
+    fun register(container: Container) {
         container.register(EventServiceProvider())
 
-        // No-arg services (auto-resolved)
-        container.singleton<TenantService> { resolve() }
-        container.singleton<CalendarService> { resolve() }
-        container.singleton<RruleExpander> { resolve() }
-        container.singleton<ICalExporter> { resolve() }
-        container.singleton<BookingUrlService> { resolve() }
-        container.singleton<ExternalBusyBlockService> { resolve() }
-        container.singleton<ConnectionService> { resolve() }
-        container.singleton<BookingCreatedTableListener> { resolve() }
-        container.singleton<BookingCancelledTableListener> { resolve() }
+        container.singleton<TenantService>()
+        container.singleton<CalendarService>()
+        container.singleton<RruleExpander>()
+        container.singleton<ICalExporter>()
+        container.singleton<BookingUrlService>()
+        container.singleton<ExternalBusyBlockService>()
+        container.singleton<ConnectionService>()
+        container.singleton<BookingCreatedTableListener>()
+        container.singleton<BookingCancelledTableListener>()
 
-        // Event actions (auto-resolved via constructor injection)
-        container.singleton<CreateEventAction> { resolve() }
-        container.singleton<UpdateEventAction> { resolve() }
-        container.singleton<DeleteEventAction> { resolve() }
-        container.singleton<UpdateOccurrenceAction> { resolve() }
-        container.singleton<ExpandOccurrencesAction> { resolve() }
-        container.singleton<EventService> { resolve() }
+        container.singleton<CreateEventAction>()
+        container.singleton<UpdateEventAction>()
+        container.singleton<DeleteEventAction>()
+        container.singleton<UpdateOccurrenceAction>()
+        container.singleton<ExpandOccurrencesAction>()
+        container.singleton<EventService>()
 
-        // Booking actions (auto-resolved via constructor injection)
-        container.singleton<CalculateAvailabilityAction> { resolve() }
-        container.singleton<CreateBookingAction> { resolve() }
-        container.singleton<CancelBookingAction> { resolve() }
-        container.singleton<BookingService> { resolve() }
+        container.singleton<CalculateAvailabilityAction>()
+        container.singleton<CreateBookingAction>()
+        container.singleton<CancelBookingAction>()
+        container.singleton<BookingService>()
 
-        // Sync module
         container.singleton<HttpClient> {
             HttpClient(CIO) {
                 install(ContentNegotiation) { json() }
             }
         }
-        container.singleton<GoogleOAuthAction> { resolve() }
-        container.singleton<GoogleCalendarSyncService> { resolve() }
-        container.singleton<AppleCalDavSyncService> { resolve() }
-        container.singleton<SyncPollingScheduler> { resolve() }
+        container.singleton<GoogleOAuthAction>()
+        container.singleton<GoogleCalendarSyncService>()
+        container.singleton<AppleCalDavSyncService>()
+        container.singleton<SyncPollingScheduler>()
 
-        // Subscribe listeners to events
         val subscriber = container.resolve<Subscriber>()
         subscriber.subscribe<BookingCreatedEvent, BookingCreatedTableListener>()
         subscriber.subscribe<BookingCancelledEvent, BookingCancelledTableListener>()
