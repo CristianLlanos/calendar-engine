@@ -13,7 +13,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 fun Route.bookingRoutes(bookingService: BookingService) {
-    route("/api/bookings") {
+    route("/bookings") {
         // Public — anyone with email+phone can book
         post {
             val request = call.receive<CreateBookingRequest>()

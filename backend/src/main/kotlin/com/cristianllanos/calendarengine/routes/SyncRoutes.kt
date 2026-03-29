@@ -21,7 +21,7 @@ fun Route.syncRoutes(
     googleSyncService: GoogleCalendarSyncService,
 ) {
     // Google OAuth flow
-    route("/api/sync/google") {
+    route("/sync/google") {
         get("/auth") {
             if (!SyncConfig.config.google.enabled) {
                 throw IllegalArgumentException("Google Calendar sync is not enabled")
@@ -51,7 +51,7 @@ fun Route.syncRoutes(
     }
 
     // Connection management
-    route("/api/sync/connections") {
+    route("/sync/connections") {
         get {
             val principal = call.tenantPrincipal()
             call.respond(connectionService.list(principal.tenantId))
@@ -90,7 +90,7 @@ fun Route.syncRoutes(
     }
 
     // Webhook endpoint for Google push notifications
-    post("/api/sync/webhooks/google") {
+    post("/sync/webhooks/google") {
         val channelId = call.request.headers["X-Goog-Channel-ID"]
 
         if (channelId != null) {
@@ -105,8 +105,12 @@ fun Route.syncRoutes(
     }
 }
 
-private fun ApplicationCall.googleOAuthRedirectUri(): String =
-    "${request.local.scheme}://${request.local.serverHost}:${request.local.serverPort}/api/sync/google/callback"
+private fun ApplicationCall.googleOAuthRedirectUri(): String {
+    // Derive the callback URI from the current request path (sibling to /auth)
+    val uri = request.local.uri
+    val basePath = uri.substringBeforeLast("/sync/google/auth")
+    return "${request.local.scheme}://${request.local.serverHost}:${request.local.serverPort}$basePath/sync/google/callback"
+}
 
 @Serializable
 private data class CreateConnectionApiRequest(

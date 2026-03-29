@@ -19,7 +19,7 @@ fun Route.calendarRoutes(calendarService: CalendarService) {
         delete = { id, tenantId -> calendarService.delete(id, tenantId) },
     )
 
-    route("/api/calendars") {
+    route("/calendars") {
         get("/{id}") {
             val principal = call.tenantPrincipal()
             val id = call.pathParam("id")

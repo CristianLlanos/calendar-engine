@@ -18,7 +18,7 @@ inline fun <reified TResponse : Any, reified TCreate : Any, reified TUpdate : An
     crossinline update: suspend (id: Int, tenantId: Int, request: TUpdate) -> TResponse,
     crossinline delete: suspend (id: Int, tenantId: Int) -> Unit,
 ) {
-    route("/api/$path") {
+    route("/$path") {
         get {
             val principal = call.tenantPrincipal()
             val params = call.paginationParams()

@@ -11,7 +11,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 fun Route.tenantRoutes(tenantService: TenantService) {
-    route("/api/tenants") {
+    route("/tenants") {
         post {
             val request = call.receive<CreateTenantRequest>()
             call.respond(HttpStatusCode.Created, tenantService.create(request))

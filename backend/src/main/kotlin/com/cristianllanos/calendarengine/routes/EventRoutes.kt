@@ -14,7 +14,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 fun Route.eventRoutes(eventService: EventService) {
-    route("/api/calendars/{calendarId}/events") {
+    route("/calendars/{calendarId}/events") {
         get {
             val principal = call.tenantPrincipal()
             val calendarId = call.pathParam("calendarId")

@@ -47,16 +47,19 @@ val CalendarEngine = createApplicationPlugin(
         register(AppServiceProvider())
     }
 
-    // Install routes
+    // Install routes under the configured prefix
+    val prefix = config.routePrefix
     application.routing {
-        tenantRoutes(container.resolve())
-        calendarRoutes(container.resolve())
-        eventRoutes(container.resolve())
-        iCalRoutes(container.resolve())
-        bookingUrlRoutes(container.resolve())
-        availabilityRoutes(container.resolve())
-        bookingRoutes(container.resolve())
-        syncRoutes(container.resolve(), container.resolve(), container.resolve())
+        route(prefix) {
+            tenantRoutes(container.resolve())
+            calendarRoutes(container.resolve())
+            eventRoutes(container.resolve())
+            iCalRoutes(container.resolve())
+            bookingUrlRoutes(container.resolve())
+            availabilityRoutes(container.resolve())
+            bookingRoutes(container.resolve())
+            syncRoutes(container.resolve(), container.resolve(), container.resolve())
+        }
     }
 
     // Start polling scheduler

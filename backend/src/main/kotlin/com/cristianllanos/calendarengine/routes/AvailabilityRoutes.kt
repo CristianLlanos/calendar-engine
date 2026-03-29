@@ -8,7 +8,7 @@ import io.ktor.server.routing.*
 import java.time.LocalDate
 
 fun Route.availabilityRoutes(calculateAvailabilityAction: CalculateAvailabilityAction) {
-    route("/api/booking-urls/{id}/availability") {
+    route("/booking-urls/{id}/availability") {
         // Public endpoint — no tenant auth required
         get {
             val id = call.pathParam("id")

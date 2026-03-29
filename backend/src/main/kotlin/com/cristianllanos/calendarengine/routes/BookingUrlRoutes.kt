@@ -11,7 +11,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 fun Route.bookingUrlRoutes(bookingUrlService: BookingUrlService) {
-    route("/api/booking-urls") {
+    route("/booking-urls") {
         get {
             val principal = call.tenantPrincipal()
             val params = call.paginationParams()

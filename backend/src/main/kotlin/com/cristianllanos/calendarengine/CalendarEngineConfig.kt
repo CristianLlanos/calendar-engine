@@ -3,7 +3,7 @@ package com.cristianllanos.calendarengine
 import com.cristianllanos.container.Container
 
 class CalendarEngineConfig {
-    var routePrefix: String = "/api"
+    var routePrefix: String = "/api/calendar"
     var container: Container? = null
     var createTables: Boolean = true
 
