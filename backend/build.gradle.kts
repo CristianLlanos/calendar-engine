@@ -10,11 +10,11 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization") version "1.9.25"
 }
 
-group = "com.calendarengine"
+group = "com.cristianllanos.calendarengine"
 version = "0.0.1"
 
 application {
-    mainClass.set("com.calendarengine.ApplicationKt")
+    mainClass.set("com.cristianllanos.calendarengine.ApplicationKt")
 
     val isDevelopment: Boolean = project.ext.has("development")
     applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
