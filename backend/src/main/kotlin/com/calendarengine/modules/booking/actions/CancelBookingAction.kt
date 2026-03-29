@@ -1,18 +1,18 @@
 package com.calendarengine.modules.booking.actions
 
+import com.calendarengine.dto.BookingCancelledEvent
 import com.calendarengine.dto.BookingResponse
-import com.calendarengine.dto.CalendarSystemEvent
 import com.calendarengine.models.Bookings
 import com.calendarengine.models.Events
 import com.calendarengine.models.enums.BookingStatus
-import com.calendarengine.modules.notification.SystemEventEmitter
+import com.cristianllanos.events.Emitter
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.LocalDateTime
 
 class CancelBookingAction(
-    private val systemEventEmitter: SystemEventEmitter,
+    private val emitter: Emitter,
 ) {
 
     fun execute(bookingId: Int, tenantId: Int, reason: String?): BookingResponse = transaction {
@@ -56,7 +56,7 @@ class CancelBookingAction(
             createdAt = booking[Bookings.createdAt].toString(),
         )
 
-        systemEventEmitter.emit(tenantId, CalendarSystemEvent.BookingCancelled(response))
+        emitter.emit(BookingCancelledEvent(tenantId, response))
 
         response
     }

@@ -1,23 +1,24 @@
 package com.calendarengine.modules.notification
 
-import com.calendarengine.dto.CalendarSystemEvent
+import com.calendarengine.dto.BookingCancelledEvent
 import com.calendarengine.models.SystemEvents
+import com.cristianllanos.events.Listener
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.LocalDateTime
 
-class TableSystemEventEmitter : SystemEventEmitter {
+class BookingCancelledTableListener : Listener<BookingCancelledEvent> {
 
     private val json = Json { encodeDefaults = true }
 
-    override fun emit(tenantId: Int, event: CalendarSystemEvent) {
+    override fun handle(event: BookingCancelledEvent) {
         transaction {
             SystemEvents.insert {
-                it[SystemEvents.tenantId] = tenantId
-                it[eventType] = event.type
-                it[payload] = json.encodeToString(event)
+                it[tenantId] = event.tenantId
+                it[eventType] = "BOOKING_CANCELLED"
+                it[payload] = json.encodeToString(event.booking)
                 it[processed] = false
                 it[createdAt] = LocalDateTime.now()
             }

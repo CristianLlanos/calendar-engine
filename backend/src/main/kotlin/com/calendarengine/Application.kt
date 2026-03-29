@@ -4,8 +4,8 @@ import com.calendarengine.config.DatabaseConfig
 import com.calendarengine.config.EventConfig
 import com.calendarengine.config.SyncConfig
 import com.calendarengine.container.AppServiceProvider
-import com.calendarengine.container.Dependencies
-import com.calendarengine.container.resolve
+import com.cristianllanos.container.Container
+import com.cristianllanos.container.resolve
 import com.calendarengine.modules.sync.SyncPollingScheduler
 import com.calendarengine.plugins.*
 import com.calendarengine.routes.*
@@ -30,7 +30,7 @@ fun Application.module() {
     configureStatusPages()
 
     // Container
-    val container = Dependencies.make().apply {
+    val container = Container().apply {
         register(AppServiceProvider())
     }
 

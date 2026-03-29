@@ -1,33 +1,13 @@
 package com.calendarengine.dto
 
-import kotlinx.serialization.Serializable
+import com.cristianllanos.events.Event
 
-@Serializable
-sealed class CalendarSystemEvent {
-    abstract val type: String
+data class BookingCreatedEvent(
+    val tenantId: Int,
+    val booking: BookingResponse,
+) : Event()
 
-    @Serializable
-    data class BookingCreated(val booking: BookingResponse) : CalendarSystemEvent() {
-        override val type = "BOOKING_CREATED"
-    }
-
-    @Serializable
-    data class BookingCancelled(val booking: BookingResponse) : CalendarSystemEvent() {
-        override val type = "BOOKING_CANCELLED"
-    }
-
-    @Serializable
-    data class EventCreated(val event: EventResponse) : CalendarSystemEvent() {
-        override val type = "EVENT_CREATED"
-    }
-
-    @Serializable
-    data class EventUpdated(val event: EventResponse) : CalendarSystemEvent() {
-        override val type = "EVENT_UPDATED"
-    }
-
-    @Serializable
-    data class EventDeleted(val eventId: Int, val calendarId: Int) : CalendarSystemEvent() {
-        override val type = "EVENT_DELETED"
-    }
-}
+data class BookingCancelledEvent(
+    val tenantId: Int,
+    val booking: BookingResponse,
+) : Event()

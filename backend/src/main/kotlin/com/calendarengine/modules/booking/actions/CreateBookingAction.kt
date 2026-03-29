@@ -5,7 +5,7 @@ import com.calendarengine.models.Bookings
 import com.calendarengine.models.BookingUrls
 import com.calendarengine.models.Events
 import com.calendarengine.models.enums.BookingStatus
-import com.calendarengine.modules.notification.SystemEventEmitter
+import com.cristianllanos.events.Emitter
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.LocalDate
@@ -13,7 +13,7 @@ import java.time.LocalDateTime
 
 class CreateBookingAction(
     private val calculateAvailabilityAction: CalculateAvailabilityAction,
-    private val systemEventEmitter: SystemEventEmitter,
+    private val emitter: Emitter,
 ) {
 
     fun execute(request: CreateBookingRequest): BookingResponse = transaction {
@@ -91,7 +91,7 @@ class CreateBookingAction(
             createdAt = now.toString(),
         )
 
-        systemEventEmitter.emit(tenantId, CalendarSystemEvent.BookingCreated(response))
+        emitter.emit(BookingCreatedEvent(tenantId, response))
 
         response
     }
