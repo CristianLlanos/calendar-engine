@@ -17,9 +17,9 @@ Widget (React)  →  SDK (TypeScript)  →  Backend API (Kotlin/Ktor)  →  MySQ
 Cada peticion autenticada incluye el header `X-Tenant-Id`. El `AuthMiddleware` extrae un `TenantPrincipal` con el `tenantId`. Todas las consultas a la base de datos filtran por `tenant_id`.
 
 Endpoints publicos (sin autenticacion de tenant):
-- `POST /api/bookings` — crear reserva
-- `GET /api/booking-urls/{id}/availability` — consultar disponibilidad
-- `GET /api/calendars/public` — listar calendarios publicos
+- `POST /api/calendar/bookings` — crear reserva
+- `GET /api/calendar/booking-urls/{id}/availability` — consultar disponibilidad
+- `GET /api/calendar/calendars/public` — listar calendarios publicos
 
 ## Modulos del backend
 
@@ -79,7 +79,7 @@ emitter.emit(BookingCreatedEvent(tenantId, response))
 ## Flujo: creacion de reserva
 
 ```
-Cliente → POST /api/bookings
+Cliente → POST /api/calendar/bookings
   → CreateBookingAction
     → CalculateAvailabilityAction.forDate() (validar slot disponible)
       → Cargar ventanas de disponibilidad
@@ -98,10 +98,10 @@ Cliente → POST /api/bookings
 ## Flujo: sincronizacion externa
 
 ```
-1. Usuario inicia OAuth → GET /api/sync/google/auth
-2. Google redirige → GET /api/sync/google/callback
+1. Usuario inicia OAuth → GET /api/calendar/sync/google/auth
+2. Google redirige → GET /api/calendar/sync/google/callback
 3. GoogleOAuthAction almacena tokens en oauth_tokens
-4. Usuario crea conexion → POST /api/sync/connections
+4. Usuario crea conexion → POST /api/calendar/sync/connections
 5. Sync (manual, polling, o webhook):
    → GoogleCalendarSyncService.syncConnection()
      → Obtener access token (refresh si expirado)
@@ -114,7 +114,7 @@ Cliente → POST /api/bookings
 ## Flujo: expansion de recurrencia
 
 ```
-GET /api/calendars/{id}/events?start=&end=
+GET /api/calendar/calendars/{id}/events?start=&end=
   → ExpandOccurrencesAction
     → Consultar eventos del calendario
     → Para cada evento recurrente:

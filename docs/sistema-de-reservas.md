@@ -112,8 +112,8 @@ Resultado: `DayAvailability` con lista de `AvailableSlot`:
 
 ## Flujo de reserva
 
-1. El cliente consulta disponibilidad (`GET /api/booking-urls/{id}/availability?date=...`)
-2. El cliente selecciona un slot y envia `POST /api/bookings` con:
+1. El cliente consulta disponibilidad (`GET /api/calendar/booking-urls/{id}/availability?date=...`)
+2. El cliente selecciona un slot y envia `POST /api/calendar/bookings` con:
    - `bookingUrlId`, `startTime`, `durationMinutes`
    - `bookerName`, `bookerEmail`, `bookerPhone` (opcional)
 3. El backend valida que el slot sigue disponible
@@ -125,7 +125,7 @@ Resultado: `DayAvailability` con lista de `AvailableSlot`:
 ## Cancelacion
 
 ```
-DELETE /api/bookings/{id}
+DELETE /api/calendar/bookings/{id}
 Body: { "reason": "motivo" }  // opcional
 ```
 

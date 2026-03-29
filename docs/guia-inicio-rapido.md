@@ -51,7 +51,7 @@ El servidor inicia en `http://localhost:7730`.
 ## 4. Crear un tenant
 
 ```bash
-curl -X POST http://localhost:7730/api/tenants \
+curl -X POST http://localhost:7730/api/calendar/tenants \
   -H "Content-Type: application/json" \
   -d '{"name": "Mi Empresa", "slug": "mi-empresa"}'
 ```
@@ -70,7 +70,7 @@ Respuesta:
 ## 5. Crear un calendario
 
 ```bash
-curl -X POST http://localhost:7730/api/calendars \
+curl -X POST http://localhost:7730/api/calendar/calendars \
   -H "Content-Type: application/json" \
   -H "X-Tenant-Id: 1" \
   -d '{"name": "Consultas", "timezone": "America/Mexico_City", "visibility": "PUBLIC"}'
@@ -79,7 +79,7 @@ curl -X POST http://localhost:7730/api/calendars \
 ## 6. Crear un evento
 
 ```bash
-curl -X POST http://localhost:7730/api/calendars/1/events \
+curl -X POST http://localhost:7730/api/calendar/calendars/1/events \
   -H "Content-Type: application/json" \
   -H "X-Tenant-Id: 1" \
   -d '{

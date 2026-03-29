@@ -42,7 +42,7 @@ FREQ=WEEKLY;BYDAY=MO,WE,FR;UNTIL=20261231T235959Z
 ## Crear un evento recurrente
 
 ```bash
-curl -X POST http://localhost:7730/api/calendars/1/events \
+curl -X POST http://localhost:7730/api/calendar/calendars/1/events \
   -H "Content-Type: application/json" \
   -H "X-Tenant-Id: 1" \
   -d '{
@@ -62,7 +62,7 @@ Esto crea:
 
 ## Expansion de ocurrencias
 
-Al consultar eventos con rango (`GET /api/calendars/{id}/events?start=&end=`), el backend expande los RRULE en ocurrencias virtuales.
+Al consultar eventos con rango (`GET /api/calendar/calendars/{id}/events?start=&end=`), el backend expande los RRULE en ocurrencias virtuales.
 
 ### Proceso
 
@@ -86,7 +86,7 @@ Al consultar eventos con rango (`GET /api/calendars/{id}/events?start=&end=`), e
 Eliminar una sola ocurrencia de un evento recurrente:
 
 ```
-DELETE /api/calendars/1/events/5?scope=THIS&occurrenceDate=2026-04-08T09:00:00
+DELETE /api/calendar/calendars/1/events/5?scope=THIS&occurrenceDate=2026-04-08T09:00:00
 ```
 
 Crea un registro en `recurrence_exceptions` con `is_excluded = true`.
@@ -96,7 +96,7 @@ Crea un registro en `recurrence_exceptions` con `is_excluded = true`.
 Cambiar titulo, hora o ubicacion de una sola ocurrencia:
 
 ```bash
-curl -X PUT http://localhost:7730/api/calendars/1/events/5/occurrence/2026-04-08T09:00:00 \
+curl -X PUT http://localhost:7730/api/calendar/calendars/1/events/5/occurrence/2026-04-08T09:00:00 \
   -H "Content-Type: application/json" \
   -H "X-Tenant-Id: 1" \
   -d '{
@@ -113,7 +113,7 @@ Crea un registro en `recurrence_exceptions` con `is_excluded = false` y los camp
 Truncar la recurrencia desde una fecha:
 
 ```
-DELETE /api/calendars/1/events/5?scope=FOLLOWING&occurrenceDate=2026-04-15T09:00:00
+DELETE /api/calendar/calendars/1/events/5?scope=FOLLOWING&occurrenceDate=2026-04-15T09:00:00
 ```
 
 Modifica el RRULE añadiendo o reemplazando `UNTIL` con la fecha anterior a la especificada. Elimina excepciones posteriores a esa fecha.
@@ -121,7 +121,7 @@ Modifica el RRULE añadiendo o reemplazando `UNTIL` con la fecha anterior a la e
 ### Eliminar todo
 
 ```
-DELETE /api/calendars/1/events/5?scope=ALL
+DELETE /api/calendar/calendars/1/events/5?scope=ALL
 ```
 
 Elimina el evento, sus excepciones y la regla de recurrencia.

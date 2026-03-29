@@ -31,7 +31,7 @@ mysql -u root -e "CREATE DATABASE calendar_engine; CREATE USER 'calendar_engine'
 cd backend && ./gradlew run
 
 # 3. Crear un tenant
-curl -X POST http://localhost:7730/api/tenants \
+curl -X POST http://localhost:7730/api/calendar/tenants \
   -H "Content-Type: application/json" \
   -d '{"name": "Mi Empresa", "slug": "mi-empresa"}'
 ```

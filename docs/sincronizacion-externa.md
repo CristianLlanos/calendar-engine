@@ -13,9 +13,9 @@ Configurables via variable de entorno `SYNC_MODE`:
 
 | Modo | Descripcion |
 |------|-------------|
-| `ON_DEMAND` | Sincronizacion manual via `POST /api/sync/connections/{id}/sync` |
+| `ON_DEMAND` | Sincronizacion manual via `POST /api/calendar/sync/connections/{id}/sync` |
 | `POLLING` | El `SyncPollingScheduler` ejecuta sincronizacion automatica cada N minutos |
-| `WEBHOOK` | Google envia notificaciones push al endpoint `/api/sync/webhooks/google` |
+| `WEBHOOK` | Google envia notificaciones push al endpoint `/api/calendar/sync/webhooks/google` |
 
 El intervalo de polling se configura con `SYNC_POLLING_INTERVAL` (default 15 minutos).
 
@@ -26,7 +26,7 @@ El intervalo de polling se configura con `SYNC_POLLING_INTERVAL` (default 15 min
 1. Crear un proyecto en [Google Cloud Console](https://console.cloud.google.com)
 2. Habilitar la Google Calendar API
 3. Crear credenciales OAuth 2.0 (tipo "Web application")
-4. Agregar el redirect URI: `http://tu-servidor:7730/api/sync/google/callback`
+4. Agregar el redirect URI: `http://tu-servidor:7730/api/calendar/sync/google/callback`
 
 ### Configuracion
 
@@ -39,9 +39,9 @@ GOOGLE_WEBHOOK_BASE_URL=https://tu-dominio-publico  # solo para modo WEBHOOK
 
 ### Flujo OAuth
 
-1. El usuario accede a `GET /api/sync/google/auth?calendarId=1` (con header `X-Tenant-Id`)
+1. El usuario accede a `GET /api/calendar/sync/google/auth?calendarId=1` (con header `X-Tenant-Id`)
 2. El backend redirige al consent screen de Google con scope `calendar.readonly`
-3. Google redirige a `/api/sync/google/callback` con un `code` y `state`
+3. Google redirige a `/api/calendar/sync/google/callback` con un `code` y `state`
 4. `GoogleOAuthAction.exchangeCode()` obtiene access token y refresh token
 5. Los tokens se almacenan en `oauth_tokens` (se reemplazan tokens previos del mismo tenant/provider)
 
@@ -64,7 +64,7 @@ Los eventos se convierten a `BusyBlock` (solo `startTime`, `endTime`, `externalE
 
 Cuando `SYNC_MODE=WEBHOOK`:
 - Al crear una conexion, se puede registrar un canal de push notifications via Google Calendar API
-- Google envia POST a `/api/sync/webhooks/google` con header `X-Goog-Channel-ID: ce-{connectionId}`
+- Google envia POST a `/api/calendar/sync/webhooks/google` con header `X-Goog-Channel-ID: ce-{connectionId}`
 - El backend ejecuta `syncConnection()` automaticamente
 
 ## Apple CalDAV
@@ -90,7 +90,7 @@ La URL CalDAV del usuario se almacena en `external_calendar_id` de la conexion.
 ### Crear conexion
 
 ```bash
-curl -X POST http://localhost:7730/api/sync/connections \
+curl -X POST http://localhost:7730/api/calendar/sync/connections \
   -H "Content-Type: application/json" \
   -H "X-Tenant-Id: 1" \
   -d '{
@@ -104,13 +104,13 @@ curl -X POST http://localhost:7730/api/sync/connections \
 ### Listar conexiones
 
 ```
-GET /api/sync/connections
+GET /api/calendar/sync/connections
 ```
 
 ### Eliminar conexion
 
 ```
-DELETE /api/sync/connections/{id}
+DELETE /api/calendar/sync/connections/{id}
 ```
 
 Los busy blocks asociados se eliminan automaticamente (CASCADE).
@@ -118,7 +118,7 @@ Los busy blocks asociados se eliminan automaticamente (CASCADE).
 ### Forzar sincronizacion
 
 ```
-POST /api/sync/connections/{id}/sync
+POST /api/calendar/sync/connections/{id}/sync
 ```
 
 ## Impacto en disponibilidad

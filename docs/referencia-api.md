@@ -5,6 +5,7 @@
 - **URL base**: `http://localhost:7730`
 - **Content-Type**: `application/json`
 - **Autenticacion**: header `X-Tenant-Id` (obligatorio salvo endpoints publicos)
+- **Prefijo de rutas**: `/api/calendar` (configurable via `routePrefix` en el plugin)
 - **Paginacion**: query params `limit` (default 50, max 100), `offset`, `sortBy`, `sortDir` (asc/desc), `search`
 
 ---
@@ -14,7 +15,7 @@
 ### Crear tenant
 
 ```
-POST /api/tenants
+POST /api/calendar/tenants
 ```
 
 ```json
@@ -39,13 +40,13 @@ Respuesta `201`:
 ### Obtener tenant
 
 ```
-GET /api/tenants/{id}
+GET /api/calendar/tenants/{id}
 ```
 
 ### Actualizar tenant
 
 ```
-PUT /api/tenants/{id}
+PUT /api/calendar/tenants/{id}
 ```
 
 Body parcial (solo los campos a modificar).
@@ -59,7 +60,7 @@ Requiere `X-Tenant-Id`.
 ### Listar calendarios
 
 ```
-GET /api/calendars
+GET /api/calendar/calendars
 ```
 
 Respuesta paginada: `{ items, total, limit, offset, hasMore }`.
@@ -67,7 +68,7 @@ Respuesta paginada: `{ items, total, limit, offset, hasMore }`.
 ### Crear calendario
 
 ```
-POST /api/calendars
+POST /api/calendar/calendars
 ```
 
 ```json
@@ -83,19 +84,19 @@ POST /api/calendars
 ### Obtener calendario
 
 ```
-GET /api/calendars/{id}
+GET /api/calendar/calendars/{id}
 ```
 
 ### Actualizar calendario
 
 ```
-PUT /api/calendars/{id}
+PUT /api/calendar/calendars/{id}
 ```
 
 ### Eliminar calendario
 
 ```
-DELETE /api/calendars/{id}
+DELETE /api/calendar/calendars/{id}
 ```
 
 Retorna `204`. Falla con `409` si tiene eventos o booking URLs asociados.
@@ -103,7 +104,7 @@ Retorna `204`. Falla con `409` si tiene eventos o booking URLs asociados.
 ### Listar calendarios publicos
 
 ```
-GET /api/calendars/public
+GET /api/calendar/calendars/public
 ```
 
 No requiere `X-Tenant-Id`. Retorna calendarios con `visibility = PUBLIC` de cualquier tenant.
@@ -117,7 +118,7 @@ Requiere `X-Tenant-Id`.
 ### Listar ocurrencias
 
 ```
-GET /api/calendars/{calendarId}/events?start=2026-04-01T00:00:00&end=2026-04-30T23:59:59
+GET /api/calendar/calendars/{calendarId}/events?start=2026-04-01T00:00:00&end=2026-04-30T23:59:59
 ```
 
 Retorna `EventOccurrence[]` con eventos normales y ocurrencias expandidas de eventos recurrentes.
@@ -142,7 +143,7 @@ Retorna `EventOccurrence[]` con eventos normales y ocurrencias expandidas de eve
 ### Crear evento
 
 ```
-POST /api/calendars/{calendarId}/events
+POST /api/calendar/calendars/{calendarId}/events
 ```
 
 Evento simple:
@@ -170,19 +171,19 @@ Evento recurrente:
 ### Obtener evento
 
 ```
-GET /api/calendars/{calendarId}/events/{id}
+GET /api/calendar/calendars/{calendarId}/events/{id}
 ```
 
 ### Actualizar evento
 
 ```
-PUT /api/calendars/{calendarId}/events/{id}
+PUT /api/calendar/calendars/{calendarId}/events/{id}
 ```
 
 ### Actualizar una ocurrencia
 
 ```
-PUT /api/calendars/{calendarId}/events/{id}/occurrence/{date}
+PUT /api/calendar/calendars/{calendarId}/events/{id}/occurrence/{date}
 ```
 
 ```json
@@ -196,7 +197,7 @@ PUT /api/calendars/{calendarId}/events/{id}/occurrence/{date}
 ### Eliminar evento
 
 ```
-DELETE /api/calendars/{calendarId}/events/{id}?scope=ALL
+DELETE /api/calendar/calendars/{calendarId}/events/{id}?scope=ALL
 ```
 
 Scopes:
@@ -207,7 +208,7 @@ Scopes:
 ### Exportar iCal
 
 ```
-GET /api/calendars/{calendarId}/export.ics
+GET /api/calendar/calendars/{calendarId}/export.ics
 ```
 
 Retorna `Content-Type: text/calendar` con formato VCALENDAR.
@@ -221,13 +222,13 @@ Requiere `X-Tenant-Id`.
 ### Listar
 
 ```
-GET /api/booking-urls
+GET /api/calendar/booking-urls
 ```
 
 ### Crear
 
 ```
-POST /api/booking-urls
+POST /api/calendar/booking-urls
 ```
 
 ```json
@@ -259,9 +260,9 @@ POST /api/booking-urls
 ### Obtener / Actualizar / Eliminar
 
 ```
-GET /api/booking-urls/{id}
-PUT /api/booking-urls/{id}
-DELETE /api/booking-urls/{id}
+GET /api/calendar/booking-urls/{id}
+PUT /api/calendar/booking-urls/{id}
+DELETE /api/calendar/booking-urls/{id}
 ```
 
 ---
@@ -273,7 +274,7 @@ No requiere autenticacion.
 ### Disponibilidad de un dia
 
 ```
-GET /api/booking-urls/{id}/availability?date=2026-04-15
+GET /api/calendar/booking-urls/{id}/availability?date=2026-04-15
 ```
 
 ```json
@@ -297,7 +298,7 @@ GET /api/booking-urls/{id}/availability?date=2026-04-15
 ### Disponibilidad de un rango
 
 ```
-GET /api/booking-urls/{id}/availability/range?start=2026-04-15&end=2026-04-20
+GET /api/calendar/booking-urls/{id}/availability/range?start=2026-04-15&end=2026-04-20
 ```
 
 Retorna `DayAvailability[]`. Maximo 60 dias por consulta.
@@ -309,7 +310,7 @@ Retorna `DayAvailability[]`. Maximo 60 dias por consulta.
 ### Crear reserva (publico)
 
 ```
-POST /api/bookings
+POST /api/calendar/bookings
 ```
 
 ```json
@@ -346,7 +347,7 @@ Respuesta `201`:
 ### Listar reservas
 
 ```
-GET /api/bookings
+GET /api/calendar/bookings
 ```
 
 Requiere `X-Tenant-Id`. Respuesta paginada.
@@ -354,13 +355,13 @@ Requiere `X-Tenant-Id`. Respuesta paginada.
 ### Obtener reserva
 
 ```
-GET /api/bookings/{id}
+GET /api/calendar/bookings/{id}
 ```
 
 ### Cancelar reserva
 
 ```
-DELETE /api/bookings/{id}
+DELETE /api/calendar/bookings/{id}
 ```
 
 Body opcional:
@@ -377,7 +378,7 @@ Requiere `X-Tenant-Id` (excepto webhook).
 ### Iniciar OAuth de Google
 
 ```
-GET /api/sync/google/auth?calendarId=1
+GET /api/calendar/sync/google/auth?calendarId=1
 ```
 
 Redirige al consent screen de Google.
@@ -385,19 +386,19 @@ Redirige al consent screen de Google.
 ### Callback de OAuth
 
 ```
-GET /api/sync/google/callback?code={code}&state={tenantId}:{calendarId}
+GET /api/calendar/sync/google/callback?code={code}&state={tenantId}:{calendarId}
 ```
 
 ### Listar conexiones
 
 ```
-GET /api/sync/connections
+GET /api/calendar/sync/connections
 ```
 
 ### Crear conexion
 
 ```
-POST /api/sync/connections
+POST /api/calendar/sync/connections
 ```
 
 ```json
@@ -412,19 +413,19 @@ POST /api/sync/connections
 ### Eliminar conexion
 
 ```
-DELETE /api/sync/connections/{id}
+DELETE /api/calendar/sync/connections/{id}
 ```
 
 ### Forzar sincronizacion
 
 ```
-POST /api/sync/connections/{id}/sync
+POST /api/calendar/sync/connections/{id}/sync
 ```
 
 ### Webhook de Google
 
 ```
-POST /api/sync/webhooks/google
+POST /api/calendar/sync/webhooks/google
 ```
 
 Headers: `X-Goog-Channel-ID: ce-{connectionId}`
