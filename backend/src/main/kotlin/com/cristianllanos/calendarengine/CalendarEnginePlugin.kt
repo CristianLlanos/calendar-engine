@@ -51,14 +51,14 @@ val CalendarEngine = createApplicationPlugin(
     val prefix = config.routePrefix
     application.routing {
         route(prefix) {
-            tenantRoutes(container.resolve())
-            calendarRoutes(container.resolve())
-            eventRoutes(container.resolve())
-            iCalRoutes(container.resolve())
-            bookingUrlRoutes(container.resolve())
-            availabilityRoutes(container.resolve())
-            bookingRoutes(container.resolve())
-            syncRoutes(container.resolve(), container.resolve(), container.resolve())
+            container.call(this::tenantRoutes)
+            container.call(this::calendarRoutes)
+            container.call(this::eventRoutes)
+            container.call(this::iCalRoutes)
+            container.call(this::bookingUrlRoutes)
+            container.call(this::availabilityRoutes)
+            container.call(this::bookingRoutes)
+            container.call(this::syncRoutes)
         }
     }
 
